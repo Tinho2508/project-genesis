@@ -1,8 +1,8 @@
 # project-genesis
 An AI-powered platform that creates self-optimizing software systems based on high-level business goals.
 
-'''
-project-genesis/
+
+'''project-genesis/
 │
 ├── README.md
 ├── .gitignore
@@ -22,9 +22,7 @@ project-genesis/
 │   └── logs/
 │
 └── docs/
-    └── project_vision.md
-'''
-
+    └── project_vision.md'''
 
     
 # Project Genesis 🌱
