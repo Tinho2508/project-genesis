@@ -1,0 +1,31 @@
+# Arquivo .gitignore para um projeto Python de IA
+
+# Ambiente virtual Python
+venv/
+.env/
+.venv/
+ENV/
+
+# Arquivos de IDE (VSCode, PyCharm)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Arquivos de treinamento de modelo (são MUITO grandes)
+outputs/models/
+outputs/logs/
+
+# Datasets (baixamos eles depois via script)
+data/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Arquivos de cache do Python
+__pycache__/
+*.py[cod]
+
+# Logs e arquivos de sistema
+*.log
+.DS_Store (se estiver no macOS)
