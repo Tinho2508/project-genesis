@@ -1,7 +1,30 @@
 # project-genesis
 An AI-powered platform that creates self-optimizing software systems based on high-level business goals.
 
+project-genesis/
+│
+├── README.md
+├── .gitignore
+├── requirements.txt
+│
+├── src/
+│   ├── data/
+│   ├── model/
+│   ├── training/
+│   └── inference.py
+│
+├── notebooks/
+│   └── exploration.ipynb
+│
+├── outputs/
+│   ├── models/
+│   └── logs/
+│
+└── docs/
+    └── project_vision.md
 
+
+    
 # Project Genesis 🌱
 
 ## Visão Geral
