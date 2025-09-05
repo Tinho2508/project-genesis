@@ -94,3 +94,66 @@ Contribuições são muito bem-vindas! Sinta-se à vontade para abrir issues par
 ## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+
+
+
+# Project Genesis 🌱
+
+## Visão Geral
+
+O **Project Genesis** é uma iniciativa para criar uma plataforma de IA que gera sistemas de software auto-otimizantes a partir de objetivos de negócio. Em vez de programar manualmente, os usuários descrevem *o que* desejam alcançar, e a IA se encarrega de *como* implementar.
+
+## 🗂️ Estrutura do Projeto: Guia Detalhado
+
+### **Raiz do Projeto** (`/`)
+| Arquivo | Função |
+|---------|--------|
+| **`README.md`** | Este arquivo. Documentação principal do projeto. |
+| **`.gitignore`** | Lista de arquivos/pastas que o Git deve ignorar (ex: `venv/`, `outputs/`, arquivos de cache). |
+| **`requirements.txt`** | Lista de todas as dependências Python necessárias para executar o projeto. |
+| **`LICENSE`** | Licença de uso do software (MIT, Apache, etc.). |
+
+### **`/src`** - Código-Fonte Principal
+Diretório com todo o código executável do projeto.
+
+| Diretório/Arquivo | Função |
+|-------------------|--------|
+| **`/src/data/`** | Scripts para aquisição, limpeza e preparação de dados para treinamento. |
+| **`/src/model/`** | Definições das arquiteturas dos modelos de machine learning. |
+| **`/src/training/`** | Scripts para treinar, validar e avaliar os modelos de IA. |
+| **`/src/inference.py`** | Script principal para usar modelos treinados e gerar novo código. |
+
+### **`/notebooks`** - Laboratório de Experimentação
+Jupyter Notebooks para pesquisa, prototipagem rápida e exploração de dados.
+
+| Arquivo | Função |
+|---------|--------|
+| **`exploration.ipynb`** | Primeiro notebook para testar conceitos de geração de código com IA. |
+| **`data_analysis.ipynb`** | (Futuro) Análise exploratória de datasets de código. |
+| **`model_experiments.ipynb`** | (Futuro) Testes com diferentes arquiteturas de modelos. |
+
+### **`/outputs`** - Resultados e Artefatos
+Tudo que é gerado durante o desenvolvimento (não versionado no Git).
+
+| Diretório | Função |
+|-----------|--------|
+| **`/outputs/models/`** | Armazena os modelos treinados (checkpoints). |
+| **`/outputs/logs/`** | Registros de treinamento para visualização no TensorBoard. |
+| **`/outputs/datasets/`** | (Futuro) Dados processados prontos para treinamento. |
+
+### **`/docs`** - Documentação
+Documentação técnica, visão do projeto e referências.
+
+| Arquivo | Função |
+|---------|--------|
+| **`project_vision.md`** | Explica a ambição, objetivos e roadmap do projeto. |
+| **`architecture.md`** | (Futuro) Diagramas e explicações da arquitetura do sistema. |
+| **`api_reference.md`** | (Futuro) Documentação da API para desenvolvedores. |
+
+## 🚀 Como Executar
+
+### 1. Clone o Repositório
+```bash
+git clone https://github.com/seu-usuario/project-genesis.git
+cd project-genesis
