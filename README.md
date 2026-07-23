@@ -1,183 +1,374 @@
-# project-genesis
-An AI-powered platform that creates self-optimizing software systems based on high-level business goals.
+<div align="center">
+
+# 🌱 PROJECT GENESIS
+
+### Gerador de Codigo com Inteligencia Artificial
+
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.1+-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
+![HuggingFace](https://img.shields.io/badge/HuggingFace-Transformers-FEDD13?style=for-the-badge&logo=huggingface&logoColor=black)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Fase%201-orange?style=for-the-badge)
+
+<br/>
+
+O **Project Genesis** e uma plataforma que gera **codigo Python funcional** a partir de instrucoes em linguagem natural. Descreva *o que* quer em portugues, e o sistema gera o codigo correspondente.
+
+</div>
+
+---
+
+## 📋 Sumario
+
+- [Como Funciona](#como-funciona)
+- [Arquitetura](#arquitetura)
+- [Demonstracao](#demonstracao)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Instalacao](#instalacao)
+- [Uso](#uso)
+- [Treinamento](#treinamento)
+- [Tecnologias](#tecnologias)
+- [Roadmap](#roadmap)
+- [Contribuindo](#contribuindo)
+- [Licenca](#licenca)
+
+---
+
+## Como Funciona
+
+```
+┌─────────────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────────┐
+│  Instrucao em   │────>│ Tokenizacao  │────>│   Modelo    │────>│   Codigo     │
+│  Linguagem      │     │ (HuggingFace)│     │  (CodeGPT)  │     │  Gerado      │
+│  Natural        │     │              │     │             │     │  (Python)    │
+└─────────────────┘     └──────────────┘     └─────────────┘     └──────────────┘
+    "Escreva uma            Entra no              IA analisa          Codigo
+     funcao que            transformer            o contexto         funcional
+     calcule fatorial"                                                 pronto
+```
+
+1. Voce digita uma instrucao em portugues
+2. O texto e transformado em tokens (numeritos que a IA entende)
+3. O modelo de linguagem processa os tokens e gera codigo
+4. O codigo gerado e retornado formatado e pronto para uso
+
+---
+
+## Arquitetura
+
+```mermaid
+graph TB
+    subgraph "ENTRADA"
+        A[Instrucao Texto] --> B[Tokenizer]
+    end
+
+    subgraph "MODELO"
+        B --> C[Embeddings]
+        C --> D[Transformer Layers<br/>CodeGPT]
+        D --> E[Probabilidades<br/>de Tokens]
+    end
+
+    subgraph "SAIDA"
+        E --> F[Decodificacao]
+        F --> G[Codigo Python<br/>Gerado]
+    end
+
+    subgraph "TREINAMENTO"
+        H[Pares Prompt-Codigo] --> I[Dataset]
+        I --> J[Training Loop]
+        J -->|Gradientes| D
+    end
+
+    style A fill:#4CAF50,stroke:#fff,color:#fff
+    style D fill:#2196F3,stroke:#fff,color:#fff
+    style G fill:#FF9800,stroke:#fff,color:#fff
+```
+
+```mermaid
+classDiagram
+    class CodeGenerator {
+        +model: AutoModelForCausalLM
+        +tokenizer: AutoTokenizer
+        +device: str
+        +load_model(model_path)
+        +generate(prompt, max_tokens, temp)
+        +generate_batch(prompts)
+    }
+
+    class CodeTrainer {
+        +model: CodeGenerator
+        +optimizer: AdamW
+        +scheduler: LambdaLR
+        +train(dataset, epochs)
+        +evaluate(eval_dataset)
+        +save_checkpoint(step)
+    }
+
+    class DataPreprocessor {
+        +cache_dir: Path
+        +load_custom_dataset(file)
+        +save_dataset(prompts, codes)
+        +get_demo_dataset()
+        +create_sample_dataset(n)
+    }
+
+    class CodeDataset {
+        +prompts: List
+        +codes: List
+        +tokenizer: Tokenizer
+        +__getitem__(idx)
+        +__len__()
+    }
+
+    class ModelConfig {
+        +model_name: str
+        +max_length: int
+        +temperature: float
+        +top_k: int
+        +top_p: float
+    }
+
+    class TrainingConfig {
+        +num_epochs: int
+        +batch_size: int
+        +learning_rate: float
+        +output_dir: str
+    }
+
+    CodeGenerator --> ModelConfig
+    CodeTrainer --> CodeGenerator
+    CodeTrainer --> TrainingConfig
+    DataPreprocessor --> CodeDataset
+    CodeTrainer --> CodeDataset
+```
+
+---
+
+## Demonstracao
+
+```
+$ python src/inference.py "Escreva uma funcao que verifique se um numero e primo"
+
+Gerando codigo...
+
+--- Codigo Gerado ---
+def eh_primo(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+--- Fim ---
+```
+
+**Modo interativo:**
+```
+$ python src/inference.py --interactive
+
+============================================================
+  PROJECT GENESIS - Gerador de Codigo com IA
+  Modo Interativo
+  Digite 'sair' ou 'quit' para encerrar
+============================================================
+
+Instrucao > Crie uma funcao que conte as vogais de uma string
+
+Gerando codigo...
+
+--- Codigo Gerado ---
+def contar_vogais(s):
+    vogais = 'aeiou'
+    return sum(1 for c in s.lower() if c in vogais)
+--- Fim ---
+
+Instrucao > sair
+Ate logo!
+```
+
+---
+
+## Estrutura do Projeto
 
 ```
 project-genesis/
 │
-├── README.md
-├── .gitignore
-├── requirements.txt
+├── README.md               # Este arquivo
+├── LICENSE                  # Licenca MIT
+├── requirements.txt         # Dependencias do projeto
+├── .gitignore              # Arquivos ignorados pelo Git
 │
-├── src/
-│   ├── data/
-│   ├── model/
-│   ├── training/
-│   └── inference.py
+├── src/                    # Codigo-fonte principal
+│   ├── __init__.py
+│   ├── inference.py        # Gerador de codigo (CLI + classe principal)
+│   │
+│   ├── model/              # Configuracoes do modelo
+│   │   ├── __init__.py
+│   │   └── config.py       # ModelConfig e TrainingConfig
+│   │
+│   ├── data/               # Processamento de dados
+│   │   ├── __init__.py
+│   │   └── preprocessor.py # Dataset, preprocessor, dados de exemplo
+│   │
+│   └── training/           # Treinamento do modelo
+│       ├── __init__.py
+│       └── trainer.py      # Loop de treinamento e evaluacao
 │
-├── notebooks/
-│   └── exploration.ipynb
+├── notebooks/              # Experimentacao
+│   └── exploration.ipynb   # Notebook exploratorio
 │
-├── outputs/
-│   ├── models/
-│   └── logs/
+├── outputs/                # Artefatos gerados (gitignore)
+│   ├── models/             # Checkpoints do modelo
+│   └── logs/               # Logs de treinamento
 │
-└── docs/
-    └── project_vision.md
-    ```
+└── docs/                   # Documentacao
+    └── project_vision.md   # Visao e roadmap do projeto
+```
 
-    
-# Project Genesis 🌱
+---
 
-## Visão Geral
+## Instalacao
 
-O **Project Genesis** é uma iniciativa ambiciosa para criar uma plataforma que permite gerar sistemas de software auto-otimizantes a partir de objetivos de negócio de alto nível, usando Inteligência Artificial. Em vez de escrever código manualmente, os usuários descrevem *o que* desejam alcançar, e a plataforma se encarrega de *como* implementar.
+### 1. Clone o repositorio
 
-## Estrutura do Projeto
-
-Aqui está um guia simples para entender cada parte deste repositório:
-
-### `/` (Raiz do Projeto)
-- **`README.md`** (Este arquivo): É a carta de apresentação do projeto. Explica o que é, como configurar e como contribuir.
-- **`.gitignore`**: Uma lista de arquivos e pastas que o Git deve ignorar (como ambientes virtuais, arquivos de modelo treinados e dados sensíveis). Isso mantém o repositório limpo.
-- **`requirements.txt`**: Lista todas as bibliotecas Python necessárias para executar o projeto. É como uma lista de ingredientes para recriar o ambiente de desenvolvimento.
-
-### `/src` (Código-Fonte Principal)
-Aqui vive o coração do projeto, o código que será executado em produção.
-
-- **`/src/data`**: Scripts responsáveis por baixar, limpar e organizar os dados que usaremos para treinar nossos modelos de IA.
-- **`/src/model`**: Onde definimos a arquitetura dos nossos modelos de machine learning. Como eles são construídos e como aprendem.
-- **`/src/training`**: Scripts que orquestram o processo de treinamento dos modelos. É aqui que a "mágica" do aprendizado acontece.
-- **`/src/inference.py`**: O script principal para usar um modelo já treinado. Você fornece um objetivo, e ele gera o código correspondente.
-
-### `/notebooks` (Laboratório de Experimentação)
-Esta pasta é nosso playground para testes e ideias iniciais. Os Jupyter Notebooks nos permitem explorar dados e prototipar rapidamente.
-
-- **`exploration.ipynb`**: Nosso primeiro notebook. Ele contém os passos iniciais para carregar dados, treinar um modelo simples de IA e testar a geração de código.
-
-### `/outputs` (Resultados e Artefatos)
-Aqui é onde salvamos tudo o que é gerado durante o desenvolvimento, mas que não é código-fonte.
-
-- **`/outputs/models`**: Armazena os modelos de IA treinados. São arquivos grandes, por isso não são commitados no Git.
-- **`/outputs/logs`**: Guarda registros (logs) do processo de treinamento. Útil para debug e análise de desempenho.
-
-### `/docs` (Documentação)
-Documentação mais detalhada sobre a visão, decisões de design e referências técnicas.
-
-- **`project_vision.md`**: Um documento que detalha a ambição por trás do Project Genesis, os problemas que busca resolver e o roadmap futuro.
-
-## Por Onde Começar?
-
-1.  **Primeiros Passos:** Comece lendo a `project_vision.md` para entender o grande objetivo.
-2.  **Configuração:** Siga as instruções de instalação abaixo para preparar seu ambiente.
-3.  **Experimentação:** Abra o `notebooks/exploration.ipynb` para ver o primeiro protótipo em ação.
-
-## Instalação e Configuração
-
-1.  **Clone este repositório:**
-    ```bash
-    git clone https://github.com/seu-usuario/project-genesis.git
-    cd project-genesis
-    ```
-
-2.  **Crie e ative um ambiente virtual Python (recomendado):**
-    ```bash
-    python -m venv venv
-    # No Linux/macOS:
-    source venv/bin/activate
-    # No Windows (PowerShell):
-    .\venv\Scripts\Activate.ps1
-    ```
-
-3.  **Instale as dependências:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Execute o Jupyter Notebook para explorar:**
-    ```bash
-    jupyter notebook notebooks/exploration.ipynb
-    ```
-
-## Roadmap (Próximas Fases)
-
-- [ ] **Fase 1 (Atual):** Provar o conceito com um modelo simples de geração de código.
-- [ ] **Fase 2:** Desenvolver uma Interface de Usuário (UI) para definir objetivos.
-- [ ] **Fase 3:** Implementar um mecanismo robusto de verificação e segurança.
-- [ ] **Fase 4:** Integrar com blockchain para registro imutável de mudanças.
-
-## Como Contribuir
-
-Contribuições são muito bem-vindas! Sinta-se à vontade para abrir issues para reportar bugs, sugerir novas features ou enviar pull requests.
-
-1.  Faça um fork do projeto.
-2.  Crie uma branch para sua feature (`git checkout -b feature/MinhaIncivelFeature`).
-3.  Faça commit das suas mudanças (`git commit -m 'Adiciona uma feature incrível'`).
-4.  Faça push para a branch (`git push origin feature/MinhaIncivelFeature`).
-5.  Abra um Pull Request.
-
-## Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
-
-
-                               # Pequeno Resumo da Estrutura 
-
-# Project Genesis 🌱
-
-## Visão Geral
-
-O **Project Genesis** é uma iniciativa para criar uma plataforma de IA que gera sistemas de software auto-otimizantes a partir de objetivos de negócio. Em vez de programar manualmente, os usuários descrevem *o que* desejam alcançar, e a IA se encarrega de *como* implementar.
-
-## 🗂️ Estrutura do Projeto: Guia Detalhado
-
-### **Raiz do Projeto** (`/`)
-| Arquivo | Função |
-|---------|--------|
-| **`README.md`** | Este arquivo. Documentação principal do projeto. |
-| **`.gitignore`** | Lista de arquivos/pastas que o Git deve ignorar (ex: `venv/`, `outputs/`, arquivos de cache). |
-| **`requirements.txt`** | Lista de todas as dependências Python necessárias para executar o projeto. |
-| **`LICENSE`** | Licença de uso do software (MIT, Apache, etc.). |
-
-### **`/src`** - Código-Fonte Principal
-Diretório com todo o código executável do projeto.
-
-| Diretório/Arquivo | Função |
-|-------------------|--------|
-| **`/src/data/`** | Scripts para aquisição, limpeza e preparação de dados para treinamento. |
-| **`/src/model/`** | Definições das arquiteturas dos modelos de machine learning. |
-| **`/src/training/`** | Scripts para treinar, validar e avaliar os modelos de IA. |
-| **`/src/inference.py`** | Script principal para usar modelos treinados e gerar novo código. |
-
-### **`/notebooks`** - Laboratório de Experimentação
-Jupyter Notebooks para pesquisa, prototipagem rápida e exploração de dados.
-
-| Arquivo | Função |
-|---------|--------|
-| **`exploration.ipynb`** | Primeiro notebook para testar conceitos de geração de código com IA. |
-| **`data_analysis.ipynb`** | (Futuro) Análise exploratória de datasets de código. |
-| **`model_experiments.ipynb`** | (Futuro) Testes com diferentes arquiteturas de modelos. |
-
-### **`/outputs`** - Resultados e Artefatos
-Tudo que é gerado durante o desenvolvimento (não versionado no Git).
-
-| Diretório | Função |
-|-----------|--------|
-| **`/outputs/models/`** | Armazena os modelos treinados (checkpoints). |
-| **`/outputs/logs/`** | Registros de treinamento para visualização no TensorBoard. |
-| **`/outputs/datasets/`** | (Futuro) Dados processados prontos para treinamento. |
-
-### **`/docs`** - Documentação
-Documentação técnica, visão do projeto e referências.
-
-| Arquivo | Função |
-|---------|--------|
-| **`project_vision.md`** | Explica a ambição, objetivos e roadmap do projeto. |
-| **`architecture.md`** | (Futuro) Diagramas e explicações da arquitetura do sistema. |
-| **`api_reference.md`** | (Futuro) Documentação da API para desenvolvedores. |
-
-## 🚀 Como Executar
-
-### 1. Clone o Repositório
 ```bash
-git clone https://github.com/seu-usuario/project-genesis.git
+git clone https://github.com/Tinho2508/project-genesis.git
 cd project-genesis
+```
+
+### 2. Crie e ative o ambiente virtual
+
+```bash
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Linux/macOS
+source venv/bin/activate
+```
+
+### 3. Instale as dependencias
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Uso
+
+### Gerar codigo com um prompt
+
+```bash
+python src/inference.py "Escreva uma funcao que calcule o fatorial de um numero"
+```
+
+### Modo interativo
+
+```bash
+python src/inference.py --interactive
+```
+
+### Usar modelo treinado
+
+```bash
+python src/inference.py --model outputs/models/final "Crie um palindromo"
+```
+
+### Parametros opcionais
+
+| Parametro | Descricao | Default |
+|:---|:---|:---:|
+| `--model` / `-m` | Caminho do modelo treinado | modelo base |
+| `--interactive` / `-i` | Modo interativo | false |
+| `--max-tokens` | Maximo de tokens a gerar | 256 |
+| `--temperature` / `-t` | Temperatura de sampling | 0.7 |
+
+---
+
+## Treinamento
+
+### Usando o dataset de demonstracao
+
+```python
+from src.model.config import ModelConfig, TrainingConfig
+from src.data.preprocessor import DataPreprocessor, CodeDataset
+from src.training.trainer import CodeTrainer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+# Configurar
+model_config = ModelConfig()
+training_config = TrainingConfig()
+
+# Carregar modelo
+tokenizer = AutoTokenizer.from_pretrained(model_config.model_name)
+model = AutoModelForCausalLM.from_pretrained(model_config.model_name)
+
+# Preparar dados
+preprocessor = DataPreprocessor()
+prompts, codes = preprocessor.get_demo_dataset()
+dataset = CodeDataset(prompts, codes, tokenizer)
+
+# Treinar
+trainer = CodeTrainer(model, tokenizer, training_config)
+history = trainer.train(dataset)
+```
+
+### Usando dados customizados
+
+Crie um arquivo JSON com o formato:
+```json
+[
+    {"prompt": "Escreva uma funcao que...", "code": "def minha_funcao():..."},
+    {"prompt": "Crie um script que...", "code": "import os\n..."}
+]
+```
+
+```python
+preprocessor = DataPreprocessor()
+prompts, codes = preprocessor.load_custom_dataset("meu_dataset.json")
+dataset = CodeDataset(prompts, codes, tokenizer)
+```
+
+---
+
+## Tecnologias
+
+| Tecnologia | Versao | Funcao |
+|:---|:---:|:---|
+| **Python** | 3.10+ | Linguagem principal |
+| **PyTorch** | 2.1+ | Framework de deep learning |
+| **HuggingFace Transformers** | 4.36+ | Modelos de linguagem |
+| **HuggingFace Datasets** | 2.16+ | Gerenciamento de dados |
+| **CodeGPT** | - | Modelo base para geracao de codigo |
+| **Jupyter** | 1.0+ | Experimentacao |
+
+---
+
+## Roadmap
+
+- [x] **Fase 1:** Prototipacao com modelo pre-treinado (CodeGPT)
+- [x] **Fase 2:** Pipeline de treinamento com dados customizados
+- [ ] **Fase 3:** Fine-tuning com datasets de codigo maiores
+- [ ] **Fase 4:** Interface grafica para interacao
+- [ ] **Fase 5:** Avaliacao automatizada (BLEU, pass@k)
+- [ ] **Fase 6:** Deploy como API REST
+
+---
+
+## Contribuindo
+
+Contribuicoes sao muito bem-vindas!
+
+1. Faca um fork do repositorio
+2. Crie uma branch para sua feature (`git checkout -b feature/minha-feature`)
+3. Faca commit das suas mudancas (`git commit -m 'Adiciona minha feature'`)
+4. Faca push para a branch (`git push origin feature/minha-feature`)
+5. Abra um Pull Request
+
+---
+
+## Licenca
+
+Este projeto esta sob a licenca MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
