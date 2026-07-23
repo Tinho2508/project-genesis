@@ -60,7 +60,7 @@ def test_evaluator():
     """Testa o avaliador de codigo."""
     from src.evaluation.evaluator import CodeEvaluator
 
-    evaluator = CoderEvaluator()
+    evaluator = CodeEvaluator()
 
     # Codigo valido
     result = evaluator.evaluate("def fatorial(n):\n    if n <= 1:\n        return 1\n    return n * fatorial(n-1)")
@@ -121,11 +121,11 @@ def test_history():
         results = manager.search("Teste 2")
         assert len(results) == 1
 
-        # Undo
+        # Undo (desfaz toggle_favorite, volta ao estado anterior)
         manager.undo()
-        assert len(manager.entries) == 1
+        assert len(manager.entries) == 2
 
-        # Redo
+        # Redo (refaz toggle_favorite)
         manager.redo()
         assert len(manager.entries) == 2
 
